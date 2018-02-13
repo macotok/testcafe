@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>TestCafe 完了画面</title>
+</head>
+<body>
+  <p class="thanksMessage">
+    <span class="name"></span>様、お問い合わせありがとうございます。
+  </p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(function() {
+    thanksAction.init();
+  });
+  /*
+  名前の値をSessionStorageから取得する
+   */
+   var thanksAction = {
+    init: function() {
+      var self = this;
+      self.nameSelector = $('.name');
+      self.nameGet = sessionStorage.getItem('name');
+      self
+      self.thanksDisplay();
+    },
+    thanksDisplay: function() {
+      var self = this;
+      self.nameSelector.text(self.nameGet);
+    }
+  }
+</script>
+</body>
+</html>

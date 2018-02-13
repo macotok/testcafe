@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>TestCafe お問い合わせフォーム</title>
+  <style>
+    .errorMessage {
+      display: none;
+    }
+    .button {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <div class="errorMessage"></div>
+    <table>
+      <tr>
+        <th>お名前 <span>※</span></th>
+        <td><input type="text" name="name" class="name" required /></td>
+      </tr>
+    </table>
+    <div class="button">
+      <div><input type="button" value="戻る" class="back" onclick="location.href='/demo/'" /></div>
+      <div><input type="button" name="submit" value="送信" class="submit" /></div>
+    </div>
+  </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(function() {
+    formAction.init();
+  });
+  /*
+  名前入力が空白だったらエラーメッセージを表示
+  名前入力の値をSessionStorageのnameにsetして、thanks.htmlでgetする
+   */
+  var formAction = {
+    init: function() {
+      var self = this;
+      self.nameSelector = $('.name');
+      self.errorMessageSelector = $('.errorMessage');
+      self.submitSelector = $('.submit');
+      self.errorMessageNone = self.errorMessageSelector.hide();
+      self.submitAction();
+    },
+    submitAction: function() {
+      var self = this;
+      self.submitSelector.on('click', function() {
+        if (self.nameSelector.val() === '') {
+          self.errorMessageAction(true);
+          return false;
+        }
+        self.errorMessageAction(false);
+        self.confirmAction();
+      });
+    },
+    errorMessageAction: function(errorMessage) {
+      var self = this;
+      if (errorMessage) {
+        self.errorMessageSelector.show().text('必須項目にご記入ください');
+      } else {
+        self.errorMessageNone;
+      }
+    },
+    confirmAction: function() {
+      var self = this;
+      if (confirm('この内容で送信します。')) {
+        self.submitSelector.prop('disabled', true);
+        sessionStorage.setItem('name', self.nameSelector.val());
+        setTimeout(function() {
+          document.location.href = 'thanks.html';
+        }, 1000);
+      } else {
+        return false;
+      }
+    }
+  }
+</script>
+</body>
+</html>
